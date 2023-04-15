@@ -20,13 +20,13 @@ mkdir -p $CONFIG_DIR
 
 function create_user {
     info "+ Start user generation..."
-    docker-compose run --rm openvpn easyrsa build-client-full "$USERNAME" nopass
+    docker compose run --rm openvpn easyrsa build-client-full "$USERNAME" nopass
     success "+ User generation complet"
 }
 
 function download_user {
     info "+ Downloading user client..."
-    docker-compose run --rm openvpn ovpn_getclient "$USERNAME" > "$CONFIG_PATH"
+    docker compose run --rm openvpn ovpn_getclient "$USERNAME" > "$CONFIG_PATH"
     sed -i "s/^remote .*\r$/remote localhost 41194 tcp\r/g" "$CONFIG_PATH"
     success "+ User profile downloaded at $CONFIG_PATH"
 }
