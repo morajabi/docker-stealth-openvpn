@@ -24,3 +24,6 @@ services:
       - ACCEPT=0.0.0.0:4911
       - CONNECT=openvpn:1194
     restart: always
+
+volumes:
+  - ./ovpn-data-store
