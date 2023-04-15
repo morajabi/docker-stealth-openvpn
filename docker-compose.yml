@@ -1,24 +1,29 @@
-openvpn:
-  image: kylemanna/openvpn
-  volumes:
-    - ./ovpn-data-store:/etc/openvpn
-  cap_add:
-    - NET_ADMIN
-  restart: always
-  environment: 
-    - DEBUG=1
-    - EASYRSA_BATCH=1
-    - EASYRSA_REQ_CN=Test
 
-stunnel:
-  image: shahinism/stunnel
-  ports:
-    - "993:4911"
-  links:
-    - openvpn
-  environment:
-    - CLIENT=no
-    - SERVICE=openvpn
-    - ACCEPT=0.0.0.0:4911
-    - CONNECT=openvpn:1194
-  restart: always
+version: '3.8'
+
+services:    
+  openvpn:
+    image: kylemanna/openvpn
+    cap_add:
+      - NET_ADMIN
+    restart: always
+    volumes:
+      - ./ovpn-data-store:/etc/openvpn
+    environment: 
+      - DEBUG=1
+      - EASYRSA_BATCH=1
+      - EASYRSA_REQ_CN=Test
+
+  stunnel:
+    image: shahinism/stunnel
+    ports:
+      - "993:4911"
+    environment:
+      - CLIENT=no
+      - SERVICE=openvpn
+      - ACCEPT=0.0.0.0:4911
+      - CONNECT=openvpn:1194
+    restart: always
+
+volumes:
+  - ./ovpn-data-store:/etc/openvpn
